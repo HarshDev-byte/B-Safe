@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">B-Safe</string>
+    <string name="calculator_name">कैलकुलेटर</string>
+    
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">B-Safe में आपका स्वागत है</string>
+    <string name="onboarding_welcome_subtitle">आपका व्यक्तिगत सुरक्षा साथी जो तब भी काम करता है जब आप अपने फोन के साथ सामान्य रूप से बातचीत नहीं कर सकते।</string>
+    <string name="onboarding_feature_sms">विश्वसनीय संपर्कों को तुरंत SMS अलर्ट</string>
+    <string name="onboarding_feature_location">अपना स्थान स्वचालित रूप से साझा करें</string>
+    <string name="onboarding_feature_triggers">बटन अनुक्रमों से SOS ट्रिगर करें</string>
+    <string name="onboarding_feature_offline">ऑफ़लाइन काम करता है - इंटरनेट की जरूरत नहीं</string>
+    <string name="onboarding_contacts_title">आपातकालीन संपर्क जोड़ें</string>
+    <string name="onboarding_contacts_subtitle">जब आप SOS अलर्ट ट्रिगर करेंगे तो इन लोगों को सूचित किया जाएगा।</string>
+    <string name="onboarding_triggers_title">SOS ट्रिगर विधियाँ</string>
+    <string name="onboarding_triggers_subtitle">चुनें कि आप आपातकालीन अलर्ट कैसे ट्रिगर करना चाहते हैं।</string>
+    <string name="onboarding_regional_title">क्षेत्रीय सेटिंग्स</string>
+    <string name="onboarding_regional_subtitle">अपने क्षेत्र के लिए आपातकालीन नंबर कॉन्फ़िगर करें।</string>
+    <string name="onboarding_personal_title">व्यक्तिगत सुरक्षा जानकारी</string>
+    <string name="onboarding_personal_subtitle">वैकल्पिक जानकारी जो आपातकालीन संदेशों में शामिल की जा सकती है।</string>
+    
+    <!-- Home Screen -->
+    <string name="home_protection_active">सुरक्षा सक्रिय</string>
+    <string name="home_setup_required">सेटअप आवश्यक</string>
+    <string name="home_contacts_configured">%d आपातकालीन संपर्क कॉन्फ़िगर किए गए</string>
+    <string name="home_add_contacts">शुरू करने के लिए आपातकालीन संपर्क जोड़ें</string>
+    <string name="home_sos_button">SOS</string>
+    <string name="home_sos_tap_help">मदद के लिए टैप करें</string>
+    <string name="home_sos_tap_cancel">रद्द करने के लिए टैप करें</string>
+    <string name="home_sos_active">सक्रिय</string>
+    <string name="home_quick_triggers">त्वरित ट्रिगर</string>
+    
+    <!-- SOS States -->
+    <string name="sos_countdown">%d सेकंड में SOS</string>
+    <string name="sos_activating">SOS सक्रिय हो रहा है…</string>
+    <string name="sos_active_message">आपातकालीन संपर्कों को सूचित किया जा रहा है</string>
+    <string name="sos_cancelled">SOS रद्द</string>
+    
+    <!-- Contacts -->
+    <string name="contacts_title">आपातकालीन संपर्क</string>
+    <string name="contacts_empty">अभी तक कोई आपातकालीन संपर्क नहीं</string>
+    <string name="contacts_empty_subtitle">उन संपर्कों को जोड़ें जिन्हें आपातकाल के दौरान सूचित किया जाएगा</string>
+    <string name="contacts_add">संपर्क जोड़ें</string>
+    <string name="contacts_edit">संपर्क संपादित करें</string>
+    <string name="contacts_delete">संपर्क हटाएं</string>
+    <string name="contacts_primary">प्राथमिक</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">सेटिंग्स</string>
+    <string name="settings_sos_config">SOS कॉन्फ़िगरेशन</string>
+    <string name="settings_trigger_methods">ट्रिगर विधियाँ</string>
+    <string name="settings_safety_features">सुरक्षा सुविधाएँ</string>
+    <string name="settings_danger_zones">खतरे के क्षेत्र</string>
+    <string name="settings_check_ins">निर्धारित चेक-इन</string>
+    <string name="settings_stealth_mode">गुप्त मोड</string>
+    <string name="settings_privacy">गोपनीयता और सुरक्षा</string>
+    <string name="settings_silent_mode">मूक मोड</string>
+    <string name="settings_fake_call">नकली कॉल</string>
+    
+    <!-- Privacy -->
+    <string name="privacy_title">गोपनीयता और सुरक्षा</string>
+    <string name="privacy_notice_title">गोपनीयता पहले</string>
+    <string name="privacy_notice_1">सभी डेटा आपके डिवाइस पर स्थानीय रूप से संग्रहीत है</string>
+    <string name="privacy_notice_2">SOS सक्रिय होने तक कोई निरंतर ट्रैकिंग नहीं</string>
+    <string name="privacy_notice_3">स्थान केवल आपातकाल के दौरान साझा किया जाता है</string>
+    <string name="privacy_notice_4">बाहरी सर्वर को कोई डेटा नहीं भेजा जाता</string>
+    <string name="privacy_notice_5">आप नियंत्रित करते हैं कि कौन सी जानकारी साझा की जाए</string>
+    
+    <!-- Dashboard -->
+    <string name="dashboard_title">सुरक्षा डैशबोर्ड</string>
+    <string name="dashboard_subtitle">आपकी व्यक्तिगत सुरक्षा अंतर्दृष्टि</string>
+    <string name="dashboard_safety_score">सुरक्षा स्कोर</string>
+    <string name="dashboard_day_streak">दिन की लकीर</string>
+    <string name="dashboard_without_incidents">बिना घटनाओं के</string>
+    <string name="dashboard_recommendations">सिफारिशें</string>
+    
+    <!-- Voice Activation -->
+    <string name="voice_listening">सुन रहा है…</string>
+    <string name="voice_say_help">\"बचाओ\" या \"मदद\" बोलें</string>
+    
+    <!-- Actions -->
+    <string name="action_save">सहेजें</string>
+    <string name="action_cancel">रद्द करें</string>
+    <string name="action_delete">हटाएं</string>
+    <string name="action_edit">संपादित करें</string>
+    <string name="action_add">जोड़ें</string>
+    <string name="action_back">वापस</string>
+    <string name="action_next">अगला</string>
+    <string name="action_done">हो गया</string>
+    <string name="action_get_started">शुरू करें</string>
+    <string name="action_trigger_sos">SOS ट्रिगर करें</string>
+    
+    <!-- Error Messages -->
+    <string name="error_generic">कुछ गलत हो गया। कृपया पुनः प्रयास करें।</string>
+    <string name="error_no_contacts">कृपया पहले कम से कम एक आपातकालीन संपर्क जोड़ें।</string>
+    
+    <!-- Success Messages -->
+    <string name="success_contact_added">संपर्क सफलतापूर्वक जोड़ा गया</string>
+    <string name="success_sos_cancelled">SOS रद्द किया गया</string>
+</resources>

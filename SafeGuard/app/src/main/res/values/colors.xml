@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#1565C0</color>
+    <color name="primary">#1565C0</color>
+    <color name="primary_dark">#0D47A1</color>
+    <color name="accent">#FF5722</color>
+    <color name="sos_red">#E53935</color>
+    <color name="sos_red_dark">#B71C1C</color>
+    <color name="safe_green">#2E7D32</color>
+</resources>

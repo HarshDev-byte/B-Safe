@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">B-Safe</string>
+    <string name="calculator_name">Calculator</string>
+    
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Welcome to B-Safe</string>
+    <string name="onboarding_welcome_subtitle">Your personal safety companion that works even when you can\'t interact with your phone normally.</string>
+    <string name="onboarding_feature_sms">Instant SMS alerts to trusted contacts</string>
+    <string name="onboarding_feature_location">Share your location automatically</string>
+    <string name="onboarding_feature_triggers">Trigger SOS with button sequences</string>
+    <string name="onboarding_feature_offline">Works offline - no internet needed</string>
+    <string name="onboarding_contacts_title">Add Emergency Contacts</string>
+    <string name="onboarding_contacts_subtitle">These people will be notified when you trigger an SOS alert.</string>
+    <string name="onboarding_triggers_title">SOS Trigger Methods</string>
+    <string name="onboarding_triggers_subtitle">Choose how you want to trigger emergency alerts.</string>
+    <string name="onboarding_regional_title">Regional Settings</string>
+    <string name="onboarding_regional_subtitle">Configure emergency numbers for your region.</string>
+    <string name="onboarding_personal_title">Personal Safety Info</string>
+    <string name="onboarding_personal_subtitle">Optional information that can be included in emergency messages.</string>
+    
+    <!-- Home Screen -->
+    <string name="home_protection_active">Protection Active</string>
+    <string name="home_setup_required">Setup Required</string>
+    <string name="home_contacts_configured">%d emergency contact(s) configured</string>
+    <string name="home_add_contacts">Add emergency contacts to get started</string>
+    <string name="home_sos_button">SOS</string>
+    <string name="home_sos_tap_help">Tap for help</string>
+    <string name="home_sos_tap_cancel">Tap to cancel</string>
+    <string name="home_sos_active">ACTIVE</string>
+    <string name="home_quick_triggers">Quick Triggers</string>
+    
+    <!-- SOS States -->
+    <string name="sos_countdown">SOS in %d seconds</string>
+    <string name="sos_activating">Activating SOS…</string>
+    <string name="sos_active_message">Emergency contacts are being notified</string>
+    <string name="sos_cancelled">SOS Cancelled</string>
+    
+    <!-- Contacts -->
+    <string name="contacts_title">Emergency Contacts</string>
+    <string name="contacts_empty">No emergency contacts yet</string>
+    <string name="contacts_empty_subtitle">Add contacts who will be notified during emergencies</string>
+    <string name="contacts_add">Add Contact</string>
+    <string name="contacts_edit">Edit Contact</string>
+    <string name="contacts_delete">Delete Contact</string>
+    <string name="contacts_delete_confirm">Are you sure you want to remove %s from your emergency contacts?</string>
+    <string name="contacts_primary">Primary</string>
+    <string name="contacts_set_primary">Set Primary</string>
+    <string name="contacts_remove_primary">Remove Primary</string>
+    
+    <!-- Contact Form -->
+    <string name="contact_name">Name</string>
+    <string name="contact_phone">Phone Number</string>
+    <string name="contact_relationship">Relationship (optional)</string>
+    <string name="contact_relationship_hint">e.g., Parent, Spouse, Friend</string>
+    <string name="contact_sms_alerts">SMS Alerts</string>
+    <string name="contact_sms_alerts_desc">Send emergency SMS to this contact</string>
+    <string name="contact_auto_call">Auto Call</string>
+    <string name="contact_auto_call_desc">Automatically call this contact during SOS</string>
+    <string name="contact_live_location">Live Location</string>
+    <string name="contact_live_location_desc">Share continuous location updates</string>
+    <string name="contact_primary_desc">First contact to be notified and called</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_sos_config">SOS Configuration</string>
+    <string name="settings_trigger_methods">Trigger Methods</string>
+    <string name="settings_trigger_methods_desc">Configure how to activate SOS</string>
+    <string name="settings_sos_behavior">SOS Behavior</string>
+    <string name="settings_sos_behavior_desc">Siren, flashlight, auto-call settings</string>
+    <string name="settings_safety_features">Safety Features</string>
+    <string name="settings_danger_zones">Danger Zones</string>
+    <string name="settings_danger_zones_desc">Set up geofence alerts</string>
+    <string name="settings_check_ins">Scheduled Check-ins</string>
+    <string name="settings_check_ins_desc">Auto-alert if you miss a check-in</string>
+    <string name="settings_stealth_mode">Stealth Mode</string>
+    <string name="settings_stealth_mode_desc">Disguise app as calculator</string>
+    <string name="settings_privacy">Privacy &amp; Security</string>
+    <string name="settings_privacy_desc">Data encryption, auto-delete logs</string>
+    <string name="settings_silent_mode">Silent Mode</string>
+    <string name="settings_silent_mode_desc">Disable siren and flashlight</string>
+    <string name="settings_fake_call">Fake Call</string>
+    <string name="settings_fake_call_desc">Enable fake incoming call feature</string>
+    
+    <!-- Triggers -->
+    <string name="trigger_volume">Volume Button Sequence</string>
+    <string name="trigger_volume_desc">Press volume buttons in a specific pattern</string>
+    <string name="trigger_shake">Shake Detection</string>
+    <string name="trigger_shake_desc">Shake your phone vigorously to trigger SOS</string>
+    <string name="trigger_power">Power Button Pattern</string>
+    <string name="trigger_power_desc">Press power button multiple times quickly</string>
+    <string name="trigger_widget">Home Screen Widget</string>
+    <string name="trigger_widget_desc">Quick SOS button on your home screen</string>
+    <string name="trigger_lockscreen">Lock Screen Access</string>
+    <string name="trigger_lockscreen_desc">Trigger SOS from lock screen</string>
+    <string name="trigger_notification">Notification Action</string>
+    <string name="trigger_notification_desc">Quick action from persistent notification</string>
+    <string name="trigger_voice">Voice Activation</string>
+    <string name="trigger_voice_desc">Say \"Help me\" or \"Emergency\" to trigger SOS</string>
+    <string name="trigger_countdown">Countdown Before SOS</string>
+    <string name="trigger_countdown_desc">Time to cancel accidental triggers</string>
+    
+    <!-- SOS Settings -->
+    <string name="sos_alert_settings">Alert Settings</string>
+    <string name="sos_siren">Siren Alert</string>
+    <string name="sos_siren_desc">Play loud alarm sound</string>
+    <string name="sos_flashlight">Flashlight</string>
+    <string name="sos_flashlight_desc">Flash SOS pattern with camera light</string>
+    <string name="sos_auto_call">Auto Call</string>
+    <string name="sos_auto_call_title">Auto-dial Emergency</string>
+    <string name="sos_auto_call_desc">Automatically call after SOS triggers</string>
+    <string name="sos_location_updates">Location Updates</string>
+    <string name="sos_periodic_location">Periodic Location SMS</string>
+    <string name="sos_periodic_location_desc">Send location updates during active SOS</string>
+    <string name="sos_sms_template">SMS Template</string>
+    <string name="sos_sms_placeholders">Available placeholders: {LOCATION}, {MAPS_LINK}, {TIMESTAMP}, {BATTERY}, {PERSONAL_INFO}</string>
+    
+    <!-- Privacy -->
+    <string name="privacy_title">Privacy &amp; Security</string>
+    <string name="privacy_data_protection">Data Protection</string>
+    <string name="privacy_encrypt">Encrypt Local Data</string>
+    <string name="privacy_encrypt_desc">Encrypt stored contacts and logs</string>
+    <string name="privacy_auto_delete">Auto-delete Logs</string>
+    <string name="privacy_auto_delete_desc">Delete SOS history after %d days</string>
+    <string name="privacy_app_lock">App Lock</string>
+    <string name="privacy_biometric">Biometric Lock</string>
+    <string name="privacy_biometric_desc">Use fingerprint or face to unlock app</string>
+    <string name="privacy_pin">PIN Lock</string>
+    <string name="privacy_pin_desc">Require PIN to access settings</string>
+    <string name="privacy_notice_title">Privacy First</string>
+    <string name="privacy_notice_1">All data is stored locally on your device</string>
+    <string name="privacy_notice_2">No continuous tracking unless SOS is active</string>
+    <string name="privacy_notice_3">Location is only shared during emergencies</string>
+    <string name="privacy_notice_4">No data is sent to external servers</string>
+    <string name="privacy_notice_5">You control what information is shared</string>
+    <string name="privacy_delete_all">Delete All History Now</string>
+    <string name="privacy_delete_warning">This will permanently delete all SOS event history and location logs.</string>
+    
+    <!-- History -->
+    <string name="history_title">SOS History</string>
+    <string name="history_empty">No SOS events yet</string>
+    <string name="history_empty_subtitle">Your emergency history will appear here</string>
+    <string name="history_triggered_by">Triggered by: %s</string>
+    <string name="history_sms_sent">%d SMS sent</string>
+    <string name="history_calls_made">%d calls</string>
+    
+    <!-- Fake Call -->
+    <string name="fake_call_title">Fake Call</string>
+    <string name="fake_call_subtitle">Simulate an incoming call to help you exit uncomfortable situations discreetly.</string>
+    <string name="fake_call_caller_name">Caller Name</string>
+    <string name="fake_call_caller_number">Caller Number</string>
+    <string name="fake_call_delay">Delay: %d seconds</string>
+    <string name="fake_call_start">Start Fake Call</string>
+    <string name="fake_call_end">End Call</string>
+    
+    <!-- Danger Zones -->
+    <string name="danger_zones_title">Danger Zones</string>
+    <string name="danger_zones_enable">Danger Zone Alerts</string>
+    <string name="danger_zones_enable_desc">Get alerts when entering marked areas</string>
+    <string name="danger_zones_empty">No danger zones configured</string>
+    <string name="danger_zones_empty_subtitle">Tap + to add areas you want to be alerted about</string>
+    <string name="danger_zones_add">Add Danger Zone</string>
+    <string name="danger_zones_name">Zone Name</string>
+    <string name="danger_zones_radius">Radius (meters)</string>
+    
+    <!-- Check-ins -->
+    <string name="check_ins_title">Scheduled Check-ins</string>
+    <string name="check_ins_enable">Scheduled Check-ins</string>
+    <string name="check_ins_enable_desc">Alert contacts if you miss a check-in</string>
+    <string name="check_ins_auto_sos">Auto-trigger SOS on missed check-in</string>
+    <string name="check_ins_grace">Grace period: %d minutes</string>
+    <string name="check_ins_empty">No check-ins scheduled</string>
+    <string name="check_ins_empty_subtitle">Tap + to schedule a safety check-in</string>
+    <string name="check_ins_confirm">I\'m Safe - Check In</string>
+    <string name="check_ins_add">Schedule Check-in</string>
+    
+    <!-- Stealth Mode -->
+    <string name="stealth_title">Stealth Mode</string>
+    <string name="stealth_subtitle">Make B-Safe appear as a different app to avoid detection</string>
+    <string name="stealth_enable">Enable Stealth Mode</string>
+    <string name="stealth_enable_desc">Change app icon and name in launcher</string>
+    <string name="stealth_disguise_as">Disguise As</string>
+    <string name="stealth_secret_access">Secret Access</string>
+    <string name="stealth_pin">Secret PIN Code</string>
+    <string name="stealth_pin_desc">Enter this PIN in the disguised app to access B-Safe</string>
+    <string name="stealth_how_it_works">How It Works</string>
+    <string name="stealth_step_1">The app icon and name will change in your launcher</string>
+    <string name="stealth_step_2">Opening the disguised app shows a fake interface</string>
+    <string name="stealth_step_3">Enter your secret PIN to access B-Safe</string>
+    <string name="stealth_step_4">SOS triggers still work normally in the background</string>
+    <string name="stealth_warning">Remember your secret PIN! If you forget it, you may need to reinstall the app to regain access.</string>
+    
+    <!-- Dashboard -->
+    <string name="dashboard_title">Safety Dashboard</string>
+    <string name="dashboard_subtitle">Your personal safety insights</string>
+    <string name="dashboard_safety_score">Safety Score</string>
+    <string name="dashboard_day_streak">Day Streak</string>
+    <string name="dashboard_without_incidents">Without incidents</string>
+    <string name="dashboard_total_events">Total Events</string>
+    <string name="dashboard_this_month">This Month</string>
+    <string name="dashboard_avg_response">Avg Response</string>
+    <string name="dashboard_recommendations">Recommendations</string>
+    <string name="dashboard_peak_times">Peak Risk Times</string>
+    <string name="dashboard_hotspots">Location Hotspots</string>
+    <string name="dashboard_trigger_analysis">Trigger Analysis</string>
+    <string name="dashboard_privacy_notice">All analytics are computed locally on your device. No data is shared externally.</string>
+    
+    <!-- Voice Activation -->
+    <string name="voice_listening">Listening…</string>
+    <string name="voice_say_help">Say \"Help me\" or \"Emergency\"</string>
+    <string name="voice_not_available">Voice recognition not available</string>
+    
+    <!-- Wearables -->
+    <string name="wearable_title">Wearable Devices</string>
+    <string name="wearable_connected">Connected</string>
+    <string name="wearable_disconnected">Disconnected</string>
+    <string name="wearable_scan">Scan for Devices</string>
+    
+    <!-- Notifications -->
+    <string name="notification_sos_title">🆘 SOS Active</string>
+    <string name="notification_sos_text">Emergency contacts are being notified</string>
+    <string name="notification_protection_title">B-Safe Active</string>
+    <string name="notification_protection_text">Protection is running in background</string>
+    <string name="notification_location_title">📍 Location Sharing Active</string>
+    <string name="notification_location_text">Your location is being shared with emergency contacts</string>
+    
+    <!-- Widget -->
+    <string name="widget_name">SOS Button</string>
+    <string name="widget_description">Quick SOS trigger button</string>
+    
+    <!-- Permissions -->
+    <string name="permission_sms_title">SMS Permission</string>
+    <string name="permission_sms_rationale">SMS permission is needed to send emergency messages to your contacts</string>
+    <string name="permission_location_title">Location Permission</string>
+    <string name="permission_location_rationale">Location permission is needed to share your location during emergencies</string>
+    <string name="permission_call_title">Phone Permission</string>
+    <string name="permission_call_rationale">Phone permission is needed to make emergency calls</string>
+    <string name="permission_microphone_title">Microphone Permission</string>
+    <string name="permission_microphone_rationale">Microphone permission is needed for voice-activated SOS</string>
+    
+    <!-- Actions -->
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_add">Add</string>
+    <string name="action_back">Back</string>
+    <string name="action_next">Next</string>
+    <string name="action_done">Done</string>
+    <string name="action_get_started">Get Started</string>
+    <string name="action_skip">Skip</string>
+    <string name="action_retry">Retry</string>
+    
+    <!-- Accessibility -->
+    <string name="a11y_sos_button_idle">SOS Button. Double tap to send emergency alert to your contacts.</string>
+    <string name="a11y_sos_button_countdown">SOS activating in %1$d seconds. Tap to cancel.</string>
+    <string name="a11y_sos_button_active">SOS is active. Emergency contacts are being notified. Tap to cancel.</string>
+    <string name="a11y_protection_active">Protection active. %1$d emergency contacts configured.</string>
+    <string name="a11y_protection_inactive">Warning: Protection not fully configured. Please add emergency contacts.</string>
+    <string name="a11y_voice_listening">Voice activation listening. Say Help me or Emergency to trigger SOS.</string>
+    <string name="a11y_voice_inactive">Voice activation inactive.</string>
+    <string name="a11y_safety_score">Safety score: %1$d out of 100. Status: %2$s</string>
+    
+    <!-- Widget Actions -->
+    <string name="action_trigger_sos">Trigger SOS</string>
+    
+    <!-- Error Messages -->
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_no_contacts">Please add at least one emergency contact first.</string>
+    <string name="error_sms_failed">Failed to send SMS. Please check your network connection.</string>
+    <string name="error_location_failed">Unable to get your location. Please enable GPS.</string>
+    <string name="error_permission_denied">Permission denied. This feature requires additional permissions.</string>
+    
+    <!-- Success Messages -->
+    <string name="success_contact_added">Contact added successfully</string>
+    <string name="success_contact_updated">Contact updated successfully</string>
+    <string name="success_contact_deleted">Contact deleted</string>
+    <string name="success_settings_saved">Settings saved</string>
+    <string name="success_sos_cancelled">SOS cancelled</string>
+    
+    <!-- Auth & Profile -->
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="profile">Profile</string>
+    <string name="welcome_back">Welcome back</string>
+    <string name="sync_data">Sync your data across devices</string>
+    <string name="cloud_backup">Cloud Backup</string>
+    <string name="cloud_backup_desc">Your contacts and settings are safely backed up</string>
+    <string name="sync_across_devices">Sync Across Devices</string>
+    <string name="sync_across_devices_desc">Access your data on any device</string>
+    <string name="live_location_sharing">Live Location Sharing</string>
+    <string name="live_location_sharing_desc">Share your location with trusted contacts</string>
+    <string name="skip_for_now">Skip for now</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="sync_now">Sync Now</string>
+    <string name="syncing">Syncing…</string>
+    
+    <!-- Map -->
+    <string name="your_location">Your Location</string>
+    <string name="acquiring_location">Acquiring location…</string>
+    <string name="location_sharing_active">Location sharing active</string>
+</resources>

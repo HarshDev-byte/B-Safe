@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">B-Safe</string>
+    <string name="calculator_name">Calculadora</string>
+    
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Bienvenido a B-Safe</string>
+    <string name="onboarding_welcome_subtitle">Tu compañero de seguridad personal que funciona incluso cuando no puedes interactuar normalmente con tu teléfono.</string>
+    <string name="onboarding_feature_sms">Alertas SMS instantáneas a contactos de confianza</string>
+    <string name="onboarding_feature_location">Comparte tu ubicación automáticamente</string>
+    <string name="onboarding_feature_triggers">Activa SOS con secuencias de botones</string>
+    <string name="onboarding_feature_offline">Funciona sin conexión - no necesita internet</string>
+    <string name="onboarding_contacts_title">Agregar Contactos de Emergencia</string>
+    <string name="onboarding_contacts_subtitle">Estas personas serán notificadas cuando actives una alerta SOS.</string>
+    <string name="onboarding_triggers_title">Métodos de Activación SOS</string>
+    <string name="onboarding_triggers_subtitle">Elige cómo quieres activar las alertas de emergencia.</string>
+    <string name="onboarding_regional_title">Configuración Regional</string>
+    <string name="onboarding_regional_subtitle">Configura los números de emergencia para tu región.</string>
+    <string name="onboarding_personal_title">Información Personal de Seguridad</string>
+    <string name="onboarding_personal_subtitle">Información opcional que puede incluirse en los mensajes de emergencia.</string>
+    
+    <!-- Home Screen -->
+    <string name="home_protection_active">Protección Activa</string>
+    <string name="home_setup_required">Configuración Requerida</string>
+    <string name="home_contacts_configured">%d contacto(s) de emergencia configurado(s)</string>
+    <string name="home_add_contacts">Agrega contactos de emergencia para comenzar</string>
+    <string name="home_sos_button">SOS</string>
+    <string name="home_sos_tap_help">Toca para pedir ayuda</string>
+    <string name="home_sos_tap_cancel">Toca para cancelar</string>
+    <string name="home_sos_active">ACTIVO</string>
+    <string name="home_quick_triggers">Activadores Rápidos</string>
+    
+    <!-- SOS States -->
+    <string name="sos_countdown">SOS en %d segundos</string>
+    <string name="sos_activating">Activando SOS…</string>
+    <string name="sos_active_message">Se está notificando a los contactos de emergencia</string>
+    <string name="sos_cancelled">SOS Cancelado</string>
+    
+    <!-- Contacts -->
+    <string name="contacts_title">Contactos de Emergencia</string>
+    <string name="contacts_empty">Aún no hay contactos de emergencia</string>
+    <string name="contacts_empty_subtitle">Agrega contactos que serán notificados durante emergencias</string>
+    <string name="contacts_add">Agregar Contacto</string>
+    <string name="contacts_edit">Editar Contacto</string>
+    <string name="contacts_delete">Eliminar Contacto</string>
+    <string name="contacts_delete_confirm">¿Estás seguro de que quieres eliminar a %s de tus contactos de emergencia?</string>
+    <string name="contacts_primary">Principal</string>
+    <string name="contacts_set_primary">Establecer como Principal</string>
+    <string name="contacts_remove_primary">Quitar como Principal</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Configuración</string>
+    <string name="settings_sos_config">Configuración SOS</string>
+    <string name="settings_trigger_methods">Métodos de Activación</string>
+    <string name="settings_trigger_methods_desc">Configura cómo activar SOS</string>
+    <string name="settings_sos_behavior">Comportamiento SOS</string>
+    <string name="settings_sos_behavior_desc">Sirena, linterna, llamada automática</string>
+    <string name="settings_safety_features">Funciones de Seguridad</string>
+    <string name="settings_danger_zones">Zonas de Peligro</string>
+    <string name="settings_danger_zones_desc">Configura alertas de geovalla</string>
+    <string name="settings_check_ins">Check-ins Programados</string>
+    <string name="settings_check_ins_desc">Alerta automática si pierdes un check-in</string>
+    <string name="settings_stealth_mode">Modo Sigiloso</string>
+    <string name="settings_stealth_mode_desc">Disfraza la app como calculadora</string>
+    <string name="settings_privacy">Privacidad y Seguridad</string>
+    <string name="settings_privacy_desc">Encriptación de datos, eliminación automática</string>
+    <string name="settings_silent_mode">Modo Silencioso</string>
+    <string name="settings_silent_mode_desc">Desactivar sirena y linterna</string>
+    <string name="settings_fake_call">Llamada Falsa</string>
+    <string name="settings_fake_call_desc">Habilitar función de llamada entrante falsa</string>
+    
+    <!-- Privacy -->
+    <string name="privacy_title">Privacidad y Seguridad</string>
+    <string name="privacy_notice_title">Privacidad Primero</string>
+    <string name="privacy_notice_1">Todos los datos se almacenan localmente en tu dispositivo</string>
+    <string name="privacy_notice_2">Sin rastreo continuo a menos que SOS esté activo</string>
+    <string name="privacy_notice_3">La ubicación solo se comparte durante emergencias</string>
+    <string name="privacy_notice_4">No se envían datos a servidores externos</string>
+    <string name="privacy_notice_5">Tú controlas qué información se comparte</string>
+    
+    <!-- Dashboard -->
+    <string name="dashboard_title">Panel de Seguridad</string>
+    <string name="dashboard_subtitle">Tus estadísticas personales de seguridad</string>
+    <string name="dashboard_safety_score">Puntuación de Seguridad</string>
+    <string name="dashboard_day_streak">Días Consecutivos</string>
+    <string name="dashboard_without_incidents">Sin incidentes</string>
+    <string name="dashboard_recommendations">Recomendaciones</string>
+    <string name="dashboard_privacy_notice">Todos los análisis se calculan localmente en tu dispositivo. No se comparten datos externamente.</string>
+    
+    <!-- Voice Activation -->
+    <string name="voice_listening">Escuchando…</string>
+    <string name="voice_say_help">Di \"Ayuda\" o \"Emergencia\"</string>
+    
+    <!-- Actions -->
+    <string name="action_save">Guardar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_add">Agregar</string>
+    <string name="action_back">Atrás</string>
+    <string name="action_next">Siguiente</string>
+    <string name="action_done">Listo</string>
+    <string name="action_get_started">Comenzar</string>
+    <string name="action_skip">Omitir</string>
+    <string name="action_retry">Reintentar</string>
+    <string name="action_trigger_sos">Activar SOS</string>
+    
+    <!-- Error Messages -->
+    <string name="error_generic">Algo salió mal. Por favor intenta de nuevo.</string>
+    <string name="error_no_contacts">Por favor agrega al menos un contacto de emergencia primero.</string>
+    <string name="error_sms_failed">Error al enviar SMS. Por favor verifica tu conexión.</string>
+    <string name="error_location_failed">No se pudo obtener tu ubicación. Por favor activa el GPS.</string>
+    
+    <!-- Success Messages -->
+    <string name="success_contact_added">Contacto agregado exitosamente</string>
+    <string name="success_settings_saved">Configuración guardada</string>
+    <string name="success_sos_cancelled">SOS cancelado</string>
+</resources>
