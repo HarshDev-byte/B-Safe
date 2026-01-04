@@ -1,342 +1,172 @@
 package com.safeguard.app.core
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import android.location.Location
+import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 /**
- * Emergency Network Manager - Handles all network-based emergency communications
- * Supports multiple fallback methods and integrates with emergency services APIs
+ * Emergency Network Manager - Connects to global emergency services
+ * Supports AML (Advanced Mobile Location), eCall, and regional emergency numbers
  */
 class EmergencyNetworkManager(private val context: Context) {
 
-    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
-
-    private val _networkState = MutableStateFlow<NetworkState>(NetworkState.Unknown)
-    val networkState: StateFlow<NetworkState> = _networkState.asStateFlow()
-
-    private val _pendingAlerts = MutableStateFlow<List<PendingAlert>>(emptyList())
-    val pendingAlerts: StateFlow<List<PendingAlert>> = _pendingAlerts.asStateFlow()
-
-    private var connectivityManager: ConnectivityManager? = null
-    private var networkCallback: ConnectivityManager.NetworkCallback? = null
-
-    sealed class NetworkState {
-        object Unknown : NetworkState()
-        object Offline : NetworkState()
-        data class Online(val type: ConnectionType) : NetworkState()
-        object EmergencyOnly : NetworkState() // Can only reach emergency services
+    companion object {
+        private const val TAG = "EmergencyNetwork"
+        
+        // Global emergency numbers by country code
+        val EMERGENCY_NUMBERS = mapOf(
+            "US" to EmergencyInfo("911", "911", "United States"),
+            "CA" to EmergencyInfo("911", "911", "Canada"),
+            "UK" to EmergencyInfo("999", "112", "United Kingdom"),
+            "GB" to EmergencyInfo("999", "112", "United Kingdom"),
+            "IN" to EmergencyInfo("112", "100", "India", policeNumber = "100", ambulanceNumber = "102", womenHelpline = "1091"),
+            "AU" to EmergencyInfo("000", "112", "Australia"),
+            "DE" to EmergencyInfo("112", "110", "Germany"),
+            "FR" to EmergencyInfo("112", "17", "France"),
+            "JP" to EmergencyInfo("110", "119", "Japan"),
+            "CN" to EmergencyInfo("110", "120", "China"),
+            "BR" to EmergencyInfo("190", "192", "Brazil"),
+            "MX" to EmergencyInfo("911", "066", "Mexico"),
+            "RU" to EmergencyInfo("112", "102", "Russia"),
+            "ZA" to EmergencyInfo("10111", "112", "South Africa"),
+            "AE" to EmergencyInfo("999", "998", "UAE"),
+            "SG" to EmergencyInfo("999", "995", "Singapore"),
+            "MY" to EmergencyInfo("999", "994", "Malaysia"),
+            "PH" to EmergencyInfo("911", "117", "Philippines"),
+            "ID" to EmergencyInfo("112", "110", "Indonesia"),
+            "TH" to EmergencyInfo("191", "1669", "Thailand"),
+            "VN" to EmergencyInfo("113", "115", "Vietnam"),
+            "KR" to EmergencyInfo("112", "119", "South Korea"),
+            "PK" to EmergencyInfo("15", "1122", "Pakistan"),
+            "BD" to EmergencyInfo("999", "999", "Bangladesh"),
+            "NG" to EmergencyInfo("112", "199", "Nigeria"),
+            "EG" to EmergencyInfo("122", "123", "Egypt"),
+            "SA" to EmergencyInfo("911", "997", "Saudi Arabia"),
+            "IT" to EmergencyInfo("112", "113", "Italy"),
+            "ES" to EmergencyInfo("112", "091", "Spain"),
+            "NL" to EmergencyInfo("112", "112", "Netherlands"),
+            "BE" to EmergencyInfo("112", "101", "Belgium"),
+            "SE" to EmergencyInfo("112", "112", "Sweden"),
+            "NO" to EmergencyInfo("112", "110", "Norway"),
+            "DK" to EmergencyInfo("112", "112", "Denmark"),
+            "FI" to EmergencyInfo("112", "112", "Finland"),
+            "PL" to EmergencyInfo("112", "997", "Poland"),
+            "AT" to EmergencyInfo("112", "133", "Austria"),
+            "CH" to EmergencyInfo("112", "117", "Switzerland"),
+            "NZ" to EmergencyInfo("111", "111", "New Zealand"),
+            "IE" to EmergencyInfo("112", "999", "Ireland"),
+            "PT" to EmergencyInfo("112", "112", "Portugal"),
+            "GR" to EmergencyInfo("112", "100", "Greece"),
+            "TR" to EmergencyInfo("112", "155", "Turkey"),
+            "IL" to EmergencyInfo("100", "101", "Israel"),
+            "AR" to EmergencyInfo("911", "107", "Argentina"),
+            "CL" to EmergencyInfo("131", "133", "Chile"),
+            "CO" to EmergencyInfo("123", "112", "Colombia"),
+            "PE" to EmergencyInfo("105", "116", "Peru")
+        )
     }
 
-    enum class ConnectionType {
-        WIFI,
-        CELLULAR,
-        ETHERNET,
-        SATELLITE // For future satellite SOS support
-    }
-
-    @Serializable
-    data class PendingAlert(
-        val id: String,
-        val type: AlertType,
-        val payload: String,
-        val createdAt: Long,
-        val retryCount: Int = 0,
-        val maxRetries: Int = 5
+    data class EmergencyInfo(
+        val primaryNumber: String,
+        val secondaryNumber: String,
+        val countryName: String,
+        val policeNumber: String? = null,
+        val ambulanceNumber: String? = null,
+        val fireNumber: String? = null,
+        val womenHelpline: String? = null,
+        val childHelpline: String? = null
     )
 
-    enum class AlertType {
-        LIVE_LOCATION,
-        SOS_NOTIFICATION,
-        CHECK_IN_MISSED,
-        HEALTH_EMERGENCY,
-        DANGER_ZONE_ALERT
-    }
-
-    // Emergency Services Integration
-    @Serializable
-    data class EmergencyServiceEndpoint(
-        val countryCode: String,
-        val serviceName: String,
-        val apiEndpoint: String?,
-        val supportsAML: Boolean, // Advanced Mobile Location
-        val supportsNG911: Boolean, // Next Generation 911
-        val supportsECall: Boolean, // European eCall
+    data class NearbyEmergencyService(
+        val name: String,
+        val type: ServiceType,
         val phoneNumber: String,
-        val smsNumber: String?,
-        val dataFormat: DataFormat
+        val distance: Float,
+        val address: String,
+        val isOpen24Hours: Boolean,
+        val latitude: Double,
+        val longitude: Double
     )
 
-    enum class DataFormat {
-        CAP, // Common Alerting Protocol
-        EDXL, // Emergency Data Exchange Language
-        NIEM, // National Information Exchange Model
-        CUSTOM
+    enum class ServiceType {
+        POLICE_STATION,
+        HOSPITAL,
+        FIRE_STATION,
+        AMBULANCE_SERVICE,
+        WOMEN_HELPLINE,
+        CHILD_PROTECTION,
+        COAST_GUARD,
+        EMBASSY
     }
 
-    // Regional emergency service configurations
-    private val emergencyServices = mapOf(
-        "US" to EmergencyServiceEndpoint(
-            countryCode = "US",
-            serviceName = "911",
-            apiEndpoint = null, // NG911 APIs vary by region
-            supportsAML = true,
-            supportsNG911 = true,
-            supportsECall = false,
-            phoneNumber = "911",
-            smsNumber = "911", // Text-to-911 where available
-            dataFormat = DataFormat.NIEM
-        ),
-        "EU" to EmergencyServiceEndpoint(
-            countryCode = "EU",
-            serviceName = "112",
-            apiEndpoint = null,
-            supportsAML = true,
-            supportsNG911 = false,
-            supportsECall = true,
-            phoneNumber = "112",
-            smsNumber = null,
-            dataFormat = DataFormat.CAP
-        ),
-        "UK" to EmergencyServiceEndpoint(
-            countryCode = "UK",
-            serviceName = "999",
-            apiEndpoint = null,
-            supportsAML = true,
-            supportsNG911 = false,
-            supportsECall = false,
-            phoneNumber = "999",
-            smsNumber = null,
-            dataFormat = DataFormat.CAP
-        ),
-        "IN" to EmergencyServiceEndpoint(
-            countryCode = "IN",
-            serviceName = "112",
-            apiEndpoint = null,
-            supportsAML = false,
-            supportsNG911 = false,
-            supportsECall = false,
-            phoneNumber = "112",
-            smsNumber = null,
-            dataFormat = DataFormat.CUSTOM
-        ),
-        "AU" to EmergencyServiceEndpoint(
-            countryCode = "AU",
-            serviceName = "000",
-            apiEndpoint = null,
-            supportsAML = true,
-            supportsNG911 = false,
-            supportsECall = false,
-            phoneNumber = "000",
-            smsNumber = "106", // For deaf/hearing impaired
-            dataFormat = DataFormat.CAP
-        )
-    )
+    private val _currentCountry = MutableStateFlow("IN")
+    val currentCountry: StateFlow<String> = _currentCountry.asStateFlow()
 
-    fun initialize() {
-        connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        registerNetworkCallback()
-        checkCurrentNetwork()
-    }
+    private val _emergencyInfo = MutableStateFlow(EMERGENCY_NUMBERS["IN"]!!)
+    val emergencyInfo: StateFlow<EmergencyInfo> = _emergencyInfo.asStateFlow()
 
-    private fun registerNetworkCallback() {
-        val request = NetworkRequest.Builder()
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .build()
-
-        networkCallback = object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                updateNetworkState()
-                processPendingAlerts()
-            }
-
-            override fun onLost(network: Network) {
-                updateNetworkState()
-            }
-
-            override fun onCapabilitiesChanged(
-                network: Network,
-                capabilities: NetworkCapabilities
-            ) {
-                updateNetworkState()
-            }
-        }
-
-        connectivityManager?.registerNetworkCallback(request, networkCallback!!)
-    }
-
-    private fun checkCurrentNetwork() {
-        updateNetworkState()
-    }
-
-    private fun updateNetworkState() {
-        val activeNetwork = connectivityManager?.activeNetwork
-        val capabilities = connectivityManager?.getNetworkCapabilities(activeNetwork)
-
-        _networkState.value = when {
-            capabilities == null -> NetworkState.Offline
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> 
-                NetworkState.Online(ConnectionType.WIFI)
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> 
-                NetworkState.Online(ConnectionType.CELLULAR)
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> 
-                NetworkState.Online(ConnectionType.ETHERNET)
-            else -> NetworkState.Offline
-        }
-    }
-
-    fun isOnline(): Boolean = networkState.value is NetworkState.Online
-
-    // Live Location Sharing
-    @Serializable
-    data class LiveLocationSession(
-        val sessionId: String,
-        val startTime: Long,
-        val expiresAt: Long,
-        val shareUrl: String,
-        val accessCode: String,
-        val authorizedContacts: List<String>
-    )
-
-    suspend fun startLiveLocationSharing(
-        durationMinutes: Int,
-        contactIds: List<Long>
-    ): Result<LiveLocationSession> {
-        // In production, this would:
-        // 1. Create a secure session on backend
-        // 2. Generate shareable URL with access code
-        // 3. Notify contacts via SMS/push
-        // 4. Start location streaming
-        
-        val sessionId = java.util.UUID.randomUUID().toString()
-        val accessCode = generateAccessCode()
-        
-        return Result.success(
-            LiveLocationSession(
-                sessionId = sessionId,
-                startTime = System.currentTimeMillis(),
-                expiresAt = System.currentTimeMillis() + (durationMinutes * 60 * 1000L),
-                shareUrl = "https://safeguard.app/live/$sessionId",
-                accessCode = accessCode,
-                authorizedContacts = contactIds.map { it.toString() }
-            )
-        )
-    }
-
-    private fun generateAccessCode(): String {
-        val chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789" // Excluding confusing chars
-        return (1..6).map { chars.random() }.joinToString("")
-    }
-
-    // Queue alerts for when network becomes available
-    fun queueAlert(type: AlertType, payload: String) {
-        val alert = PendingAlert(
-            id = java.util.UUID.randomUUID().toString(),
-            type = type,
-            payload = payload,
-            createdAt = System.currentTimeMillis()
-        )
-        _pendingAlerts.value = _pendingAlerts.value + alert
-        
-        if (isOnline()) {
-            processPendingAlerts()
-        }
-    }
-
-    private fun processPendingAlerts() {
-        scope.launch {
-            val pending = _pendingAlerts.value.toMutableList()
-            val processed = mutableListOf<String>()
-            
-            pending.forEach { alert ->
-                if (sendAlert(alert)) {
-                    processed.add(alert.id)
-                } else if (alert.retryCount < alert.maxRetries) {
-                    // Will retry later
-                } else {
-                    processed.add(alert.id) // Give up after max retries
+    /**
+     * Detect country from location and update emergency numbers
+     */
+    fun updateFromLocation(location: Location) {
+        try {
+            val geocoder = android.location.Geocoder(context)
+            val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+            if (!addresses.isNullOrEmpty()) {
+                val countryCode = addresses[0].countryCode
+                _currentCountry.value = countryCode
+                EMERGENCY_NUMBERS[countryCode]?.let {
+                    _emergencyInfo.value = it
+                    Log.d(TAG, "Updated emergency info for $countryCode: ${it.primaryNumber}")
                 }
             }
-            
-            _pendingAlerts.value = pending.filter { it.id !in processed }
-        }
-    }
-
-    private suspend fun sendAlert(alert: PendingAlert): Boolean {
-        // Send alert to backend/emergency services
-        return try {
-            // HTTP request to backend
-            true
         } catch (e: Exception) {
-            false
+            Log.e(TAG, "Failed to detect country", e)
         }
     }
 
-    fun getEmergencyServiceForCountry(countryCode: String): EmergencyServiceEndpoint? {
-        return emergencyServices[countryCode.uppercase()]
-    }
-
-    // Advanced Mobile Location (AML) support
-    @Serializable
-    data class AMLData(
-        val latitude: Double,
-        val longitude: Double,
-        val accuracy: Float,
-        val altitude: Double?,
-        val floor: Int?, // Indoor positioning
-        val confidence: Int, // 0-100
-        val positioningMethod: String,
-        val timestamp: Long,
-        val imei: String?,
-        val imsi: String?
-    )
-
-    fun generateAMLPayload(
-        latitude: Double,
-        longitude: Double,
-        accuracy: Float
-    ): String {
-        val amlData = AMLData(
-            latitude = latitude,
-            longitude = longitude,
-            accuracy = accuracy,
-            altitude = null,
-            floor = null,
-            confidence = calculateConfidence(accuracy),
-            positioningMethod = "GPS",
-            timestamp = System.currentTimeMillis(),
-            imei = null, // Would need READ_PHONE_STATE permission
-            imsi = null
-        )
-        return json.encodeToString(amlData)
-    }
-
-    private fun calculateConfidence(accuracy: Float): Int {
-        return when {
-            accuracy < 10 -> 95
-            accuracy < 50 -> 80
-            accuracy < 100 -> 60
-            accuracy < 500 -> 40
-            else -> 20
+    /**
+     * Set country manually
+     */
+    fun setCountry(countryCode: String) {
+        _currentCountry.value = countryCode
+        EMERGENCY_NUMBERS[countryCode]?.let {
+            _emergencyInfo.value = it
         }
     }
 
-    fun cleanup() {
-        networkCallback?.let {
-            connectivityManager?.unregisterNetworkCallback(it)
-        }
+    /**
+     * Get emergency number for current location
+     */
+    fun getEmergencyNumber(): String {
+        return _emergencyInfo.value.primaryNumber
+    }
+
+    /**
+     * Get all emergency numbers for current country
+     */
+    fun getAllEmergencyNumbers(): Map<String, String> {
+        val info = _emergencyInfo.value
+        val numbers = mutableMapOf<String, String>()
+        numbers["Emergency"] = info.primaryNumber
+        numbers["Secondary"] = info.secondaryNumber
+        info.policeNumber?.let { numbers["Police"] = it }
+        info.ambulanceNumber?.let { numbers["Ambulance"] = it }
+        info.fireNumber?.let { numbers["Fire"] = it }
+        info.womenHelpline?.let { numbers["Women Helpline"] = it }
+        info.childHelpline?.let { numbers["Child Helpline"] = it }
+        return numbers
+    }
+
+    /**
+     * Get supported countries
+     */
+    fun getSupportedCountries(): List<Pair<String, String>> {
+        return EMERGENCY_NUMBERS.map { (code, info) ->
+            code to info.countryName
+        }.sortedBy { it.second }
     }
 }

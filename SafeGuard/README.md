@@ -90,6 +90,57 @@ Personal safety remains a critical concern globally, especially in emergency sit
 | **Widget/Lock Screen** | One-tap SOS from home or lock screen | ✅ |
 | **Wearable Integration** | Trigger from smartwatch or panic button | ✅ |
 
+### 🤖 AI-Powered Safety (NEW!)
+
+| Feature | Description |
+|---------|-------------|
+| **Threat Detection AI** | Real-time detection of falls, sudden stops, device snatching, running |
+| **Safety Predictions** | Daily risk forecasts based on time, location, and patterns |
+| **Voice Commands** | Natural language SOS in 10+ languages |
+| **Smart Insights** | Personalized safety recommendations based on behavior |
+| **Auto-Alert** | Automatic emergency notification in critical situations |
+| **Route Analysis** | AI warns about dangerous areas on your path |
+
+### 🚶 Safe Walk - Virtual Companion (NEW!)
+
+| Feature | Description |
+|---------|-------------|
+| **Virtual Companion** | Someone "walks" with you virtually |
+| **Periodic Check-ins** | App asks if you're OK during your walk |
+| **Auto-Alert** | Companion notified if you miss check-ins |
+| **Arrival Confirmation** | Auto-detect when you reach destination |
+| **Real-time Tracking** | Companion can see your progress |
+
+### 👥 Community Safety (NEW!)
+
+| Feature | Description |
+|---------|-------------|
+| **Crowd-Sourced Reports** | Community-driven safety incident reports |
+| **Area Safety Score** | Real-time safety rating for your location |
+| **Incident Types** | Theft, harassment, poor lighting, safe spots, etc. |
+| **Verified Reports** | Community voting for accuracy |
+| **Safety Heatmap** | Visual map of incident density |
+
+### ⌚ Wearable & Guardian Circle (NEW!)
+
+| Feature | Description |
+|---------|-------------|
+| **Smartwatch Support** | Trigger SOS from Wear OS devices |
+| **Panic Button** | Bluetooth panic button/key fob integration |
+| **Guardian Circle** | Family safety network with real-time tracking |
+| **Guardian Alerts** | Automatic alerts to family members |
+| **Location Sharing** | Share location with trusted guardians |
+
+### 📴 Offline Capabilities (NEW!)
+
+| Feature | Description |
+|---------|-------------|
+| **Offline Maps Cache** | Cache map areas for offline access |
+| **Offline Safe Places** | Pre-cached police stations, hospitals nearby |
+| **Quick Settings Tile** | SOS from notification shade/lock screen |
+| **SMS Works Offline** | Emergency SMS without internet |
+| **Local Processing** | All AI runs on-device |
+
 ### 📱 Emergency Protocol
 
 When SOS is activated, B-Safe executes:
@@ -271,6 +322,10 @@ SafeGuard/
 ├── app/src/main/java/com/safeguard/app/
 │   ├── auth/                    # Authentication
 │   │   └── AuthManager.kt       # Firebase/Google Sign-In
+│   ├── ai/                      # AI-powered features
+│   │   ├── ThreatDetectionAI.kt # Real-time threat detection
+│   │   ├── SmartSafetyAssistant.kt # Personalized insights
+│   │   └── VoiceCommandAI.kt    # Multi-language voice commands
 │   ├── core/                    # Core business logic
 │   │   ├── SOSManager.kt        # SOS orchestration
 │   │   ├── LocationManager.kt   # GPS services
@@ -281,12 +336,22 @@ SafeGuard/
 │   │   ├── AudioEvidenceManager.kt # Audio recording
 │   │   ├── SafetyScoreManager.kt # Gamified safety score
 │   │   ├── QuickEscapeManager.kt # Quick escape features
+│   │   ├── SafeWalkManager.kt   # Virtual companion
+│   │   ├── CrowdSourcedSafetyManager.kt # Community reports
+│   │   ├── WearableManager.kt   # Smartwatch support
+│   │   ├── GuardianCircleManager.kt # Family safety network
+│   │   ├── PanicButtonManager.kt # Bluetooth panic buttons
+│   │   ├── OfflineMapsManager.kt # Offline map caching
+│   │   ├── EmergencyNetworkManager.kt # Global emergency numbers
 │   │   └── VoiceActivationManager.kt
 │   ├── data/
 │   │   ├── models/              # Data classes
 │   │   ├── local/               # Room + DataStore
 │   │   └── repository/          # Repository pattern
 │   ├── services/                # Foreground services
+│   │   ├── SOSForegroundService.kt
+│   │   ├── SOSQuickSettingsTile.kt # Lock screen tile
+│   │   └── TriggerDetectionService.kt
 │   ├── receivers/               # Broadcast receivers
 │   ├── widgets/                 # Home screen widgets
 │   └── ui/

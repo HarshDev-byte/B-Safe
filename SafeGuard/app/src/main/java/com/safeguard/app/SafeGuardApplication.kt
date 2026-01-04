@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import com.google.firebase.FirebaseApp
 import com.safeguard.app.auth.AuthManager
 import com.safeguard.app.core.*
+import com.safeguard.app.ai.*
 import com.safeguard.app.data.local.SafeGuardDatabase
 import com.safeguard.app.data.local.SettingsDataStore
 import com.safeguard.app.data.repository.SafeGuardRepository
@@ -36,6 +37,52 @@ class SafeGuardApplication : Application() {
         private set
 
     lateinit var placesManager: PlacesManager
+        private set
+
+    // Premium Managers
+    lateinit var safetyScoreManager: SafetyScoreManager
+        private set
+
+    lateinit var journeyMonitor: JourneyMonitor
+        private set
+
+    lateinit var audioEvidenceManager: AudioEvidenceManager
+        private set
+
+    lateinit var quickEscapeManager: QuickEscapeManager
+        private set
+
+    // AI Managers
+    lateinit var threatDetectionAI: ThreatDetectionAI
+        private set
+
+    lateinit var smartSafetyAssistant: SmartSafetyAssistant
+        private set
+
+    lateinit var voiceCommandAI: VoiceCommandAI
+        private set
+
+    // Advanced Safety Managers
+    lateinit var safeWalkManager: SafeWalkManager
+        private set
+
+    lateinit var crowdSourcedSafetyManager: CrowdSourcedSafetyManager
+        private set
+
+    lateinit var wearableManager: WearableManager
+        private set
+
+    lateinit var guardianCircleManager: GuardianCircleManager
+        private set
+
+    lateinit var emergencyNetworkManager: EmergencyNetworkManager
+        private set
+
+    // Offline & Hardware Managers
+    lateinit var offlineMapsManager: OfflineMapsManager
+        private set
+
+    lateinit var panicButtonManager: PanicButtonManager
         private set
 
     override fun onCreate() {
@@ -70,6 +117,28 @@ class SafeGuardApplication : Application() {
             locationManager = locationManager,
             alertManager = alertManager
         )
+
+        // Initialize Premium Managers
+        safetyScoreManager = SafetyScoreManager(this)
+        journeyMonitor = JourneyMonitor(this, locationManager, sosManager)
+        audioEvidenceManager = AudioEvidenceManager(this)
+        quickEscapeManager = QuickEscapeManager(this)
+
+        // Initialize AI Managers
+        threatDetectionAI = ThreatDetectionAI(this, sosManager)
+        smartSafetyAssistant = SmartSafetyAssistant(this)
+        voiceCommandAI = VoiceCommandAI(this, sosManager)
+
+        // Initialize Advanced Safety Managers
+        safeWalkManager = SafeWalkManager(this, locationManager, sosManager)
+        crowdSourcedSafetyManager = CrowdSourcedSafetyManager(this)
+        wearableManager = WearableManager(this, sosManager)
+        guardianCircleManager = GuardianCircleManager(this, locationManager, sosManager)
+        emergencyNetworkManager = EmergencyNetworkManager(this)
+
+        // Initialize Offline & Hardware Managers
+        offlineMapsManager = OfflineMapsManager(this)
+        panicButtonManager = PanicButtonManager(this, sosManager)
     }
 
     /**
@@ -94,6 +163,15 @@ class SafeGuardApplication : Application() {
         sosManager.cleanup()
         alertManager.cleanup()
         triggerDetector.cleanup()
+        journeyMonitor.cleanup()
+        threatDetectionAI.cleanup()
+        voiceCommandAI.cleanup()
+        safeWalkManager.cleanup()
+        crowdSourcedSafetyManager.cleanup()
+        wearableManager.cleanup()
+        guardianCircleManager.cleanup()
+        panicButtonManager.cleanup()
+        offlineMapsManager.cleanup()
         super.onTerminate()
     }
 }

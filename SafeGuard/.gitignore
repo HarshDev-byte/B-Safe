@@ -84,3 +84,13 @@ Thumbs.db
 
 # Kotlin
 *.kotlin_module
+
+
+# Release signing
+keystore.properties
+*.jks
+*.keystore
+release/
+
+# API Keys
+secrets.xml

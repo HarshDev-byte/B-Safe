@@ -10,7 +10,12 @@ import com.safeguard.app.SafeGuardApplication
 import com.safeguard.app.auth.AuthManager
 import com.safeguard.app.core.JourneyMonitor
 import com.safeguard.app.core.SafetyScoreManager
+import com.safeguard.app.core.SafeWalkManager
+import com.safeguard.app.core.CrowdSourcedSafetyManager
 import com.safeguard.app.core.SOSManager
+import com.safeguard.app.core.PanicButtonManager
+import com.safeguard.app.ai.ThreatDetectionAI
+import com.safeguard.app.ai.SmartSafetyAssistant
 import com.safeguard.app.data.firebase.FirebaseRepository
 import com.safeguard.app.data.models.*
 import com.safeguard.app.data.repository.SafeGuardRepository
@@ -26,9 +31,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val firebaseRepository: FirebaseRepository = FirebaseRepository()
     private val locationManager = app.locationManager
     
-    // New premium managers
-    private val safetyScoreManager = SafetyScoreManager(application)
-    private val journeyMonitor = JourneyMonitor(application, locationManager, sosManager)
+    // Premium managers
+    private val safetyScoreManager = app.safetyScoreManager
+    private val journeyMonitor = app.journeyMonitor
+    
+    // Advanced safety managers
+    private val safeWalkManager = app.safeWalkManager
+    private val crowdSourcedSafetyManager = app.crowdSourcedSafetyManager
+    
+    // AI managers
+    private val threatDetectionAI = app.threatDetectionAI
+    private val smartSafetyAssistant = app.smartSafetyAssistant
+    
+    // Hardware managers
+    private val panicButtonManager = app.panicButtonManager
 
     companion object {
         private const val TAG = "MainViewModel"
@@ -72,6 +88,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     // Journey Monitor
     val activeJourney: StateFlow<JourneyMonitor.Journey?> = journeyMonitor.activeJourney
     val journeyHistory: StateFlow<List<JourneyMonitor.Journey>> = journeyMonitor.journeyHistory
+    
+    // Safe Walk
+    val activeSafeWalk: StateFlow<SafeWalkManager.SafeWalkSession?> = safeWalkManager.activeSession
+    val pendingSafeWalkCheckIn: StateFlow<SafeWalkManager.CheckIn?> = safeWalkManager.pendingCheckIn
+    
+    // Community Safety
+    val nearbyReports: StateFlow<List<CrowdSourcedSafetyManager.SafetyReport>> = crowdSourcedSafetyManager.nearbyReports
+    val areaSafetyScore: StateFlow<CrowdSourcedSafetyManager.AreaSafetyScore?> = crowdSourcedSafetyManager.areaSafetyScore
+    
+    // AI Features
+    val threatAssessment: StateFlow<ThreatDetectionAI.ThreatAssessment?> = threatDetectionAI.currentThreatAssessment
+    val aiInsights: StateFlow<List<SmartSafetyAssistant.SafetyInsight>> = smartSafetyAssistant.insights
+    val dailyPrediction: StateFlow<SmartSafetyAssistant.DailyPrediction?> = smartSafetyAssistant.dailyPrediction
+    
+    // Panic Button / Wearables
+    val panicButtonConnectionState: StateFlow<PanicButtonManager.ConnectionState> = panicButtonManager.connectionState
+    val discoveredPanicButtons: StateFlow<List<PanicButtonManager.PanicButton>> = panicButtonManager.discoveredDevices
+    val pairedPanicButtons: StateFlow<List<PanicButtonManager.PanicButton>> = panicButtonManager.pairedDevices
 
     init {
         // Observe auth state
@@ -161,6 +195,133 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     
     fun extendJourneyTime(additionalMinutes: Int) {
         journeyMonitor.extendTime(additionalMinutes)
+    }
+    
+    // ==================== Safe Walk ====================
+    
+    fun startSafeWalk(
+        companionName: String,
+        companionPhone: String,
+        destination: LatLng,
+        destinationName: String,
+        expectedMinutes: Int
+    ) {
+        safeWalkManager.startSafeWalk(
+            companionName = companionName,
+            companionPhone = companionPhone,
+            destination = destination,
+            destinationName = destinationName,
+            expectedMinutes = expectedMinutes
+        )
+    }
+    
+    fun respondToSafeWalkCheckIn(isOk: Boolean) {
+        safeWalkManager.respondToCheckIn(isOk)
+    }
+    
+    fun confirmSafeWalkArrival() {
+        safeWalkManager.confirmArrival()
+    }
+    
+    fun pauseSafeWalk(reason: String) {
+        safeWalkManager.pauseSession(reason)
+    }
+    
+    fun resumeSafeWalk() {
+        safeWalkManager.resumeSession()
+    }
+    
+    fun cancelSafeWalk() {
+        safeWalkManager.cancelSession()
+    }
+    
+    fun extendSafeWalkTime(additionalMinutes: Int) {
+        safeWalkManager.extendTime(additionalMinutes)
+    }
+    
+    // ==================== Community Safety ====================
+    
+    fun submitSafetyReport(
+        type: CrowdSourcedSafetyManager.ReportType,
+        severity: CrowdSourcedSafetyManager.Severity,
+        description: String
+    ) {
+        viewModelScope.launch {
+            val location = locationManager.getCurrentLocation()
+            location?.let {
+                crowdSourcedSafetyManager.submitReport(
+                    type = type,
+                    severity = severity,
+                    description = description,
+                    latitude = it.latitude,
+                    longitude = it.longitude
+                )
+            }
+        }
+    }
+    
+    fun upvoteReport(reportId: String) {
+        crowdSourcedSafetyManager.upvoteReport(reportId)
+    }
+    
+    fun downvoteReport(reportId: String) {
+        crowdSourcedSafetyManager.downvoteReport(reportId)
+    }
+    
+    fun refreshNearbyReports() {
+        viewModelScope.launch {
+            val location = locationManager.getCurrentLocation()
+            location?.let {
+                crowdSourcedSafetyManager.fetchNearbyReports(it.latitude, it.longitude)
+            }
+        }
+    }
+    
+    // ==================== AI Features ====================
+    
+    fun startThreatMonitoring() {
+        threatDetectionAI.startMonitoring()
+    }
+    
+    fun stopThreatMonitoring() {
+        threatDetectionAI.stopMonitoring()
+    }
+    
+    fun refreshAIInsights() {
+        viewModelScope.launch {
+            smartSafetyAssistant.analyzeUserBehavior(
+                contacts = emergencyContacts.value,
+                settings = userSettings.value,
+                sosEvents = sosEvents.value,
+                dangerZones = dangerZones.value
+            )
+        }
+    }
+    
+    // ==================== Panic Button / Wearables ====================
+    
+    fun startPanicButtonScan() {
+        panicButtonManager.startScan()
+    }
+    
+    fun stopPanicButtonScan() {
+        panicButtonManager.stopScan()
+    }
+    
+    fun connectToPanicButton(device: PanicButtonManager.PanicButton) {
+        panicButtonManager.connectToDevice(device)
+    }
+    
+    fun disconnectPanicButton() {
+        panicButtonManager.disconnect()
+    }
+    
+    fun pairPanicButton(device: PanicButtonManager.PanicButton) {
+        panicButtonManager.pairDevice(device)
+    }
+    
+    fun unpairPanicButton(device: PanicButtonManager.PanicButton) {
+        panicButtonManager.unpairDevice(device)
     }
 
     private fun startLocationUpdates() {

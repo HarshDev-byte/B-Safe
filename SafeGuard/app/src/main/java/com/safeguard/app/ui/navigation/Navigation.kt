@@ -39,6 +39,10 @@ sealed class Screen(val route: String) {
     object SafeRoute : Screen("safe_route")
     object SafetyScore : Screen("safety_score")
     object Journey : Screen("journey")
+    object AIInsights : Screen("ai_insights")
+    object SafeWalk : Screen("safe_walk")
+    object CommunityReports : Screen("community_reports")
+    object Wearables : Screen("wearables")
 }
 
 @Composable
@@ -132,6 +136,9 @@ fun SafeGuardNavHost(
                 onNavigateToSafeRoute = { navController.navigate(Screen.SafeRoute.route) },
                 onNavigateToSafetyScore = { navController.navigate(Screen.SafetyScore.route) },
                 onNavigateToJourney = { navController.navigate(Screen.Journey.route) },
+                onNavigateToAIInsights = { navController.navigate(Screen.AIInsights.route) },
+                onNavigateToSafeWalk = { navController.navigate(Screen.SafeWalk.route) },
+                onNavigateToCommunity = { navController.navigate(Screen.CommunityReports.route) },
                 onSignIn = { navController.navigate(Screen.SignIn.route) }
             )
         }
@@ -288,6 +295,62 @@ fun SafeGuardNavHost(
 
         composable(Screen.Journey.route) {
             JourneyScreen(
+                viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.AIInsights.route) {
+            val aiInsights by viewModel.aiInsights.collectAsState()
+            val dailyPrediction by viewModel.dailyPrediction.collectAsState()
+            val threatAssessment by viewModel.threatAssessment.collectAsState()
+            
+            AIInsightsScreen(
+                insights = aiInsights,
+                prediction = dailyPrediction,
+                threatAssessment = threatAssessment,
+                isAIMonitoring = false,
+                onToggleAIMonitoring = { enabled ->
+                    if (enabled) viewModel.startThreatMonitoring()
+                    else viewModel.stopThreatMonitoring()
+                },
+                onNavigateBack = { navController.popBackStack() },
+                onInsightAction = { route ->
+                    when (route) {
+                        "contacts" -> navController.navigate(Screen.Contacts.route)
+                        "trigger_settings" -> navController.navigate(Screen.TriggerSettings.route)
+                        "live_location" -> navController.navigate(Screen.LiveLocation.route)
+                        else -> {}
+                    }
+                }
+            )
+        }
+
+        composable(Screen.SafeWalk.route) {
+            SafeWalkScreen(
+                viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.CommunityReports.route) {
+            val nearbyReports by viewModel.nearbyReports.collectAsState()
+            val areaSafetyScore by viewModel.areaSafetyScore.collectAsState()
+            
+            CommunityReportsScreen(
+                reports = nearbyReports,
+                areaSafetyScore = areaSafetyScore,
+                onSubmitReport = { type, severity, description ->
+                    viewModel.submitSafetyReport(type, severity, description)
+                },
+                onUpvote = { reportId -> viewModel.upvoteReport(reportId) },
+                onDownvote = { reportId -> viewModel.downvoteReport(reportId) },
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(Screen.Wearables.route) {
+            WearablesScreen(
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )

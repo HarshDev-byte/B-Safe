@@ -6,6 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 // Load local.properties for API keys
@@ -32,8 +33,28 @@ android {
         }
         
         // Google Maps API Key - reads from local.properties
-        val mapsApiKey = localProperties.getProperty("MAPS_API_KEY") ?: "YOUR_GOOGLE_MAPS_API_KEY"
+        val mapsApiKey = localProperties.getProperty("MAPS_API_KEY") ?: ""
         manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
+        
+        // Build config fields
+        buildConfigField("String", "SUPPORT_EMAIL", "\"support@bsafe-app.com\"")
+        buildConfigField("String", "PRIVACY_POLICY_URL", "\"https://bsafe-app.com/privacy\"")
+        buildConfigField("String", "TERMS_URL", "\"https://bsafe-app.com/terms\"")
+    }
+
+    signingConfigs {
+        create("release") {
+            // Load from environment variables or keystore.properties for CI/CD
+            val keystorePropertiesFile = rootProject.file("keystore.properties")
+            if (keystorePropertiesFile.exists()) {
+                val keystoreProperties = Properties()
+                keystoreProperties.load(keystorePropertiesFile.inputStream())
+                storeFile = file(keystoreProperties.getProperty("storeFile") ?: "")
+                storePassword = keystoreProperties.getProperty("storePassword") ?: ""
+                keyAlias = keystoreProperties.getProperty("keyAlias") ?: ""
+                keyPassword = keystoreProperties.getProperty("keyPassword") ?: ""
+            }
+        }
     }
 
     buildTypes {
@@ -44,9 +65,16 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+            
+            // Disable debug logging in release
+            buildConfigField("Boolean", "ENABLE_LOGGING", "false")
         }
         debug {
             isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+            buildConfigField("Boolean", "ENABLE_LOGGING", "true")
         }
     }
 
@@ -125,6 +153,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-messaging-ktx")
 
     // Google Sign-In
     implementation("com.google.android.gms:play-services-auth:20.7.0")

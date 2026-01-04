@@ -1,0 +1,1 @@
+Personal safety app with SOS alerts, location sharing, and emergency contacts

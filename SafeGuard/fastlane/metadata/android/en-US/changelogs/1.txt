@@ -1,0 +1,16 @@
+🎉 Initial Release v1.0.0
+
+• Multiple SOS trigger methods (volume buttons, shake, widget, voice)
+• Emergency contact management with SMS and auto-call
+• Real-time location sharing during emergencies
+• Stealth mode with calculator disguise
+• Fake call feature for discreet exits
+• Danger zone geofencing alerts
+• Scheduled check-ins with auto-alert
+• Safety dashboard with insights
+• Wearable device support
+• Community safety reports
+• AI-powered threat detection
+• Multi-language support (English, Spanish, Hindi)
+• Privacy-first design with local data storage
+• Optional Google Sign-In for cloud backup

@@ -1,210 +1,237 @@
 package com.safeguard.app.core
 
 import android.content.Context
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
 /**
- * Wearable Manager - Handles communication with smartwatches and fitness bands
- * Supports Wear OS, Samsung Galaxy Watch, and generic Bluetooth LE devices
+ * Wearable Device Manager
+ * Supports smartwatches, fitness bands, and Bluetooth panic buttons
  */
 class WearableManager(private val context: Context) {
 
-    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-
-    private val _connectionState = MutableStateFlow<WearableConnectionState>(WearableConnectionState.Disconnected)
-    val connectionState: StateFlow<WearableConnectionState> = _connectionState.asStateFlow()
-
-    private val _connectedDevices = MutableStateFlow<List<WearableDevice>>(emptyList())
-    val connectedDevices: StateFlow<List<WearableDevice>> = _connectedDevices.asStateFlow()
-
-    private val _healthData = MutableStateFlow<HealthData?>(null)
-    val healthData: StateFlow<HealthData?> = _healthData.asStateFlow()
-
-    sealed class WearableConnectionState {
-        object Disconnected : WearableConnectionState()
-        object Connecting : WearableConnectionState()
-        object Connected : WearableConnectionState()
-        data class Error(val message: String) : WearableConnectionState()
+    companion object {
+        private const val TAG = "WearableManager"
     }
 
     data class WearableDevice(
         val id: String,
         val name: String,
-        val type: WearableType,
-        val batteryLevel: Int,
+        val type: DeviceType,
         val isConnected: Boolean,
-        val supportsHeartRate: Boolean,
-        val supportsSOSTrigger: Boolean,
-        val supportsFallDetection: Boolean
+        val batteryLevel: Int?,
+        val lastSeen: Long,
+        val capabilities: List<Capability>
     )
 
-    enum class WearableType {
-        WEAR_OS,
-        SAMSUNG_GALAXY_WATCH,
-        FITBIT,
-        GARMIN,
-        APPLE_WATCH_COMPANION, // For users with both Android phone and Apple Watch
-        GENERIC_BLE,
-        PANIC_BUTTON // Dedicated SOS hardware buttons
+    enum class DeviceType(val icon: String) {
+        SMARTWATCH("⌚"),
+        FITNESS_BAND("📿"),
+        PANIC_BUTTON("🔴"),
+        SMART_RING("💍"),
+        SMART_JEWELRY("📿"),
+        BLUETOOTH_TAG("📍")
     }
 
-    data class HealthData(
-        val heartRate: Int?,
-        val heartRateVariability: Float?,
-        val stressLevel: Int?, // 0-100
-        val bloodOxygen: Int?, // SpO2 percentage
-        val steps: Int,
-        val isMoving: Boolean,
-        val lastFallDetected: Long?,
-        val timestamp: Long = System.currentTimeMillis()
-    )
+    enum class Capability {
+        SOS_TRIGGER,
+        HEART_RATE,
+        FALL_DETECTION,
+        LOCATION,
+        VIBRATION_ALERT,
+        AUDIO_ALERT,
+        TWO_WAY_COMMUNICATION
+    }
 
-    data class SOSFromWearable(
+    data class WearableTrigger(
         val deviceId: String,
-        val triggerType: WearableTriggerType,
-        val healthDataSnapshot: HealthData?,
+        val triggerType: TriggerType,
         val timestamp: Long = System.currentTimeMillis()
     )
 
-    enum class WearableTriggerType {
+    enum class TriggerType {
         BUTTON_PRESS,
-        BUTTON_LONG_PRESS,
+        DOUBLE_TAP,
+        LONG_PRESS,
+        SHAKE,
         FALL_DETECTED,
-        ABNORMAL_HEART_RATE,
-        PANIC_GESTURE, // e.g., covering watch face
-        VOICE_COMMAND
+        HEART_RATE_ANOMALY,
+        GESTURE
     }
 
-    // Thresholds for automatic SOS triggers
-    data class HealthThresholds(
-        val lowHeartRate: Int = 40,
-        val highHeartRate: Int = 180,
-        val lowBloodOxygen: Int = 88,
-        val highStressLevel: Int = 90,
-        val fallDetectionEnabled: Boolean = true,
-        val inactivityAlertMinutes: Int = 0 // 0 = disabled
-    )
+    private val _connectedDevices = MutableStateFlow<List<WearableDevice>>(emptyList())
+    val connectedDevices: StateFlow<List<WearableDevice>> = _connectedDevices.asStateFlow()
 
-    private var healthThresholds = HealthThresholds()
+    private val _isScanning = MutableStateFlow(false)
+    val isScanning: StateFlow<Boolean> = _isScanning.asStateFlow()
 
-    fun initialize() {
-        scope.launch {
-            // Initialize wearable connections
-            // In production, this would use:
-            // - Wear OS Data Layer API
-            // - Samsung Accessory SDK
-            // - Bluetooth LE scanning
-            _connectionState.value = WearableConnectionState.Disconnected
+    private var onSOSTrigger: (() -> Unit)? = null
+
+    /**
+     * Set callback for SOS trigger from wearable
+     */
+    fun setOnSOSTrigger(callback: () -> Unit) {
+        onSOSTrigger = callback
+    }
+
+    /**
+     * Start scanning for wearable devices
+     */
+    fun startScanning() {
+        _isScanning.value = true
+        Log.d(TAG, "Started scanning for wearable devices")
+        
+        // In production, this would use Bluetooth LE scanning
+        // For demo, we'll simulate finding devices
+        simulateDeviceDiscovery()
+    }
+
+    /**
+     * Stop scanning
+     */
+    fun stopScanning() {
+        _isScanning.value = false
+        Log.d(TAG, "Stopped scanning")
+    }
+
+    /**
+     * Connect to a wearable device
+     */
+    fun connectDevice(deviceId: String): Boolean {
+        val devices = _connectedDevices.value.toMutableList()
+        val index = devices.indexOfFirst { it.id == deviceId }
+        
+        if (index >= 0) {
+            devices[index] = devices[index].copy(isConnected = true)
+            _connectedDevices.value = devices
+            Log.d(TAG, "Connected to device: $deviceId")
+            return true
         }
+        return false
     }
 
-    fun scanForDevices() {
-        scope.launch {
-            _connectionState.value = WearableConnectionState.Connecting
-            // Scan for nearby wearable devices
-            // This is a placeholder - real implementation would use BLE scanning
-        }
-    }
-
-    fun connectToDevice(deviceId: String) {
-        scope.launch {
-            _connectionState.value = WearableConnectionState.Connecting
-            // Connect to specific device
-        }
-    }
-
+    /**
+     * Disconnect from a wearable device
+     */
     fun disconnectDevice(deviceId: String) {
-        scope.launch {
-            // Disconnect from device
+        val devices = _connectedDevices.value.toMutableList()
+        val index = devices.indexOfFirst { it.id == deviceId }
+        
+        if (index >= 0) {
+            devices[index] = devices[index].copy(isConnected = false)
+            _connectedDevices.value = devices
+            Log.d(TAG, "Disconnected from device: $deviceId")
         }
     }
 
-    fun sendSOSToWearable(message: String) {
-        scope.launch {
-            // Send SOS notification to connected wearables
-            // This would vibrate the watch and show alert
-            connectedDevices.value.forEach { device ->
-                if (device.isConnected) {
-                    // Send haptic feedback and visual alert
-                }
+    /**
+     * Send alert to all connected wearables
+     */
+    fun sendAlertToWearables(message: String) {
+        _connectedDevices.value
+            .filter { it.isConnected && Capability.VIBRATION_ALERT in it.capabilities }
+            .forEach { device ->
+                sendVibrationAlert(device.id)
+                Log.d(TAG, "Sent alert to ${device.name}")
             }
+    }
+
+    /**
+     * Send vibration alert to specific device
+     */
+    private fun sendVibrationAlert(deviceId: String) {
+        // In production, this would send BLE command to device
+        Log.d(TAG, "Vibration alert sent to $deviceId")
+    }
+
+    /**
+     * Handle trigger from wearable device
+     */
+    fun handleWearableTrigger(trigger: WearableTrigger) {
+        Log.d(TAG, "Received trigger from ${trigger.deviceId}: ${trigger.triggerType}")
+        
+        when (trigger.triggerType) {
+            TriggerType.BUTTON_PRESS,
+            TriggerType.DOUBLE_TAP,
+            TriggerType.LONG_PRESS,
+            TriggerType.FALL_DETECTED -> {
+                onSOSTrigger?.invoke()
+            }
+            TriggerType.HEART_RATE_ANOMALY -> {
+                // Could trigger a check-in or alert
+                Log.d(TAG, "Heart rate anomaly detected")
+            }
+            else -> {}
         }
     }
 
-    fun updateHealthThresholds(thresholds: HealthThresholds) {
-        healthThresholds = thresholds
+    /**
+     * Get supported wearable types
+     */
+    fun getSupportedDeviceTypes(): List<DeviceType> {
+        return DeviceType.values().toList()
     }
 
-    fun checkHealthDataForEmergency(data: HealthData): EmergencyHealthAlert? {
-        // Check if health data indicates emergency
-        data.heartRate?.let { hr ->
-            if (hr < healthThresholds.lowHeartRate) {
-                return EmergencyHealthAlert(
-                    type = EmergencyHealthType.LOW_HEART_RATE,
-                    value = hr,
-                    threshold = healthThresholds.lowHeartRate,
-                    message = "Dangerously low heart rate detected: $hr BPM"
-                )
-            }
-            if (hr > healthThresholds.highHeartRate) {
-                return EmergencyHealthAlert(
-                    type = EmergencyHealthType.HIGH_HEART_RATE,
-                    value = hr,
-                    threshold = healthThresholds.highHeartRate,
-                    message = "Dangerously high heart rate detected: $hr BPM"
-                )
-            }
+    /**
+     * Check if any device with SOS capability is connected
+     */
+    fun hasSOSCapableDevice(): Boolean {
+        return _connectedDevices.value.any { 
+            it.isConnected && Capability.SOS_TRIGGER in it.capabilities 
         }
-
-        data.bloodOxygen?.let { spo2 ->
-            if (spo2 < healthThresholds.lowBloodOxygen) {
-                return EmergencyHealthAlert(
-                    type = EmergencyHealthType.LOW_BLOOD_OXYGEN,
-                    value = spo2,
-                    threshold = healthThresholds.lowBloodOxygen,
-                    message = "Low blood oxygen detected: $spo2%"
-                )
-            }
-        }
-
-        data.lastFallDetected?.let { fallTime ->
-            if (healthThresholds.fallDetectionEnabled && 
-                System.currentTimeMillis() - fallTime < 60000) { // Within last minute
-                return EmergencyHealthAlert(
-                    type = EmergencyHealthType.FALL_DETECTED,
-                    value = 0,
-                    threshold = 0,
-                    message = "Fall detected - checking if you're okay"
-                )
-            }
-        }
-
-        return null
     }
 
-    data class EmergencyHealthAlert(
-        val type: EmergencyHealthType,
-        val value: Int,
-        val threshold: Int,
-        val message: String
-    )
-
-    enum class EmergencyHealthType {
-        LOW_HEART_RATE,
-        HIGH_HEART_RATE,
-        LOW_BLOOD_OXYGEN,
-        HIGH_STRESS,
-        FALL_DETECTED,
-        PROLONGED_INACTIVITY
+    private fun simulateDeviceDiscovery() {
+        // Simulate finding devices for demo
+        val simulatedDevices = listOf(
+            WearableDevice(
+                id = "watch_001",
+                name = "Galaxy Watch 5",
+                type = DeviceType.SMARTWATCH,
+                isConnected = false,
+                batteryLevel = 85,
+                lastSeen = System.currentTimeMillis(),
+                capabilities = listOf(
+                    Capability.SOS_TRIGGER,
+                    Capability.HEART_RATE,
+                    Capability.FALL_DETECTION,
+                    Capability.VIBRATION_ALERT
+                )
+            ),
+            WearableDevice(
+                id = "band_001",
+                name = "Mi Band 8",
+                type = DeviceType.FITNESS_BAND,
+                isConnected = false,
+                batteryLevel = 72,
+                lastSeen = System.currentTimeMillis(),
+                capabilities = listOf(
+                    Capability.SOS_TRIGGER,
+                    Capability.HEART_RATE,
+                    Capability.VIBRATION_ALERT
+                )
+            ),
+            WearableDevice(
+                id = "panic_001",
+                name = "SafetyPro Panic Button",
+                type = DeviceType.PANIC_BUTTON,
+                isConnected = false,
+                batteryLevel = 100,
+                lastSeen = System.currentTimeMillis(),
+                capabilities = listOf(
+                    Capability.SOS_TRIGGER,
+                    Capability.LOCATION
+                )
+            )
+        )
+        
+        _connectedDevices.value = simulatedDevices
+        _isScanning.value = false
     }
 
     fun cleanup() {
-        // Disconnect all devices and cleanup
+        stopScanning()
     }
 }

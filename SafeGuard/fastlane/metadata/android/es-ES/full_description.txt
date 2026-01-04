@@ -1,0 +1,28 @@
+B-Safe es tu compañero de seguridad personal diseñado para ayudarte en situaciones de emergencia. Con múltiples métodos de activación SOS y alertas instantáneas a tus contactos de confianza, la ayuda está siempre a un toque de distancia.
+
+🆘 MÚLTIPLES ACTIVADORES SOS
+• Secuencia de botones de volumen - Activación discreta
+• Detección de sacudida - Activa agitando tu teléfono
+• Widget de pantalla de inicio - Botón de emergencia con un toque
+• Tile de Configuración Rápida - Acceso desde pantalla de bloqueo
+• Activación por voz - Di "Ayúdame" o "Emergencia"
+
+📍 COMPARTIR UBICACIÓN
+• Ubicación GPS automática en mensajes de emergencia
+• Enlace de Google Maps para navegación fácil
+• Actualizaciones periódicas de ubicación durante SOS activo
+• Funciona sin conexión con última ubicación conocida
+
+👥 CONTACTOS DE EMERGENCIA
+• Añade contactos de confianza ilimitados
+• Personaliza alertas por contacto
+• Llamada automática al contacto principal
+• Alertas SMS con tu ubicación
+
+🔒 PRIVACIDAD PRIMERO
+• Todos los datos almacenados localmente en tu dispositivo
+• Sin rastreo continuo
+• Ubicación compartida solo durante emergencias
+• Copia de seguridad en la nube encriptada opcional
+
+Tu seguridad. Tu privacidad. Tu control.

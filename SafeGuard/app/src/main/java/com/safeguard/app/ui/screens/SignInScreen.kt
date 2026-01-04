@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -31,8 +32,9 @@ import com.google.android.gms.common.api.ApiException
 import com.safeguard.app.ui.viewmodels.MainViewModel
 
 private const val TAG = "SignInScreen"
-// Web Client ID from google-services.json
-private const val WEB_CLIENT_ID = "694894899068-gq116n6grvn9r0l6vbdlqkarllc8vdvf.apps.googleusercontent.com"
+// Web Client ID - Get from Firebase Console > Authentication > Sign-in method > Google
+// This should be loaded from BuildConfig or resources in production
+private const val WEB_CLIENT_ID = "YOUR_WEB_CLIENT_ID.apps.googleusercontent.com"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -282,10 +284,23 @@ fun SignInScreen(
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
             ) {
                 if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        strokeWidth = 2.dp,
-                        color = Color.Gray
+                    // Custom loading indicator to avoid Material3 CircularProgressIndicator crash
+                    val rotation by infiniteTransition.animateFloat(
+                        initialValue = 0f,
+                        targetValue = 360f,
+                        animationSpec = infiniteRepeatable(
+                            animation = tween(1000, easing = LinearEasing),
+                            repeatMode = RepeatMode.Restart
+                        ),
+                        label = "loading"
+                    )
+                    Icon(
+                        Icons.Default.Refresh,
+                        contentDescription = "Loading",
+                        modifier = Modifier
+                            .size(24.dp)
+                            .graphicsLayer { rotationZ = rotation },
+                        tint = Color.Gray
                     )
                 } else {
                     Box(

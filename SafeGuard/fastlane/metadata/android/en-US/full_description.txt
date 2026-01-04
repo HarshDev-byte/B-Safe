@@ -1,0 +1,49 @@
+B-Safe is your personal safety companion designed to help you in emergency situations. With multiple SOS trigger methods and instant alerts to your trusted contacts, help is always just a tap away.
+
+🆘 MULTIPLE SOS TRIGGERS
+• Volume button sequence - Discreet activation
+• Shake detection - Trigger by shaking your phone
+• Home screen widget - One-tap emergency button
+• Quick Settings tile - Access from lock screen
+• Voice activation - Say "Help me" or "Emergency"
+
+📍 LOCATION SHARING
+• Automatic GPS location in emergency messages
+• Google Maps link for easy navigation
+• Periodic location updates during active SOS
+• Works offline with last known location
+
+👥 EMERGENCY CONTACTS
+• Add unlimited trusted contacts
+• Customize alerts per contact
+• Auto-call primary contact
+• SMS alerts with your location
+
+🔒 PRIVACY FIRST
+• All data stored locally on your device
+• No continuous tracking
+• Location shared only during emergencies
+• Optional encrypted cloud backup
+
+🛡️ STEALTH MODE
+• Disguise app as a calculator
+• Secret PIN access
+• SOS triggers still work in background
+
+⚡ ADDITIONAL FEATURES
+• Fake incoming call to exit uncomfortable situations
+• Danger zone alerts with geofencing
+• Scheduled check-ins with auto-alert
+• Safety dashboard with insights
+• Wearable device support
+• Community safety reports
+• AI-powered threat detection
+
+🌍 WORKS OFFLINE
+• SMS alerts work without internet
+• Local data storage
+• Background protection always active
+
+B-Safe is designed for everyone who wants an extra layer of security. Whether you're walking alone at night, traveling to unfamiliar places, or just want peace of mind, B-Safe has you covered.
+
+Your safety. Your privacy. Your control.

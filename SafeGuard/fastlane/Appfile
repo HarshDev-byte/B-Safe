@@ -1,0 +1,5 @@
+# B-Safe Fastlane Appfile
+# https://docs.fastlane.tools/advanced/Appfile/
+
+json_key_file("path/to/play-store-credentials.json") # Path to the json secret file
+package_name("com.safeguard.app") # App package name

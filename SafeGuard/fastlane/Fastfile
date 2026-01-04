@@ -1,0 +1,70 @@
+# B-Safe Fastlane Configuration
+# https://docs.fastlane.tools
+
+default_platform(:android)
+
+platform :android do
+  desc "Build debug APK"
+  lane :debug do
+    gradle(task: "assembleDebug")
+  end
+
+  desc "Build release AAB for Play Store"
+  lane :build_release do
+    gradle(
+      task: "bundle",
+      build_type: "Release"
+    )
+  end
+
+  desc "Build release APK"
+  lane :build_apk do
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+  end
+
+  desc "Run unit tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Deploy to Play Store internal track"
+  lane :internal do
+    build_release
+    upload_to_play_store(
+      track: "internal",
+      aab: "app/build/outputs/bundle/release/app-release.aab",
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Deploy to Play Store beta track"
+  lane :beta do
+    build_release
+    upload_to_play_store(
+      track: "beta",
+      aab: "app/build/outputs/bundle/release/app-release.aab"
+    )
+  end
+
+  desc "Deploy to Play Store production"
+  lane :production do
+    build_release
+    upload_to_play_store(
+      track: "production",
+      aab: "app/build/outputs/bundle/release/app-release.aab",
+      rollout: "0.1"  # 10% staged rollout
+    )
+  end
+
+  desc "Increment version code"
+  lane :bump_version do
+    # Read current version from build.gradle.kts
+    # Increment and update
+    puts "Remember to manually update versionCode and versionName in app/build.gradle.kts"
+  end
+end

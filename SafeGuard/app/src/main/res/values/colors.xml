@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#1565C0</color>
-    <color name="primary">#1565C0</color>
-    <color name="primary_dark">#0D47A1</color>
-    <color name="accent">#FF5722</color>
-    <color name="sos_red">#E53935</color>
-    <color name="sos_red_dark">#B71C1C</color>
-    <color name="safe_green">#2E7D32</color>
+    <!-- Primary Brand Colors -->
+    <color name="primary">#E53935</color>
+    <color name="primary_dark">#C62828</color>
+    <color name="primary_light">#EF5350</color>
+    <color name="on_primary">#FFFFFF</color>
+    
+    <!-- Secondary Colors -->
+    <color name="secondary">#1E88E5</color>
+    <color name="secondary_dark">#1565C0</color>
+    <color name="secondary_light">#42A5F5</color>
+    <color name="on_secondary">#FFFFFF</color>
+    
+    <!-- Background Colors -->
+    <color name="background">#FAFAFA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="on_background">#212121</color>
+    <color name="on_surface">#212121</color>
+    
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="error">#F44336</color>
+    <color name="info">#2196F3</color>
+    
+    <!-- SOS Specific Colors -->
+    <color name="sos_active">#D32F2F</color>
+    <color name="sos_countdown">#FF5722</color>
+    <color name="sos_idle">#E53935</color>
+    
+    <!-- Safety Score Colors -->
+    <color name="safety_excellent">#4CAF50</color>
+    <color name="safety_good">#8BC34A</color>
+    <color name="safety_moderate">#FFC107</color>
+    <color name="safety_poor">#FF9800</color>
+    <color name="safety_critical">#F44336</color>
+    
+    <!-- Launcher Icon Colors -->
+    <color name="ic_launcher_background">#E53935</color>
 </resources>

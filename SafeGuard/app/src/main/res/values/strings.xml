@@ -265,6 +265,31 @@
     <!-- Widget Actions -->
     <string name="action_trigger_sos">Trigger SOS</string>
     
+    <!-- Quick Settings Tile -->
+    <string name="sos_tile_label">B-Safe SOS</string>
+    <string name="sos_tile_description">Tap to trigger emergency SOS alert</string>
+    <string name="sos_active">SOS Active!</string>
+    <string name="tap_for_emergency">Tap for emergency</string>
+    
+    <!-- AI Features -->
+    <string name="ai_insights_title">AI Safety Insights</string>
+    <string name="ai_monitoring">AI Monitoring</string>
+    <string name="threat_detected">Threat Detected</string>
+    <string name="daily_prediction">Daily Safety Prediction</string>
+    
+    <!-- Safe Walk -->
+    <string name="safe_walk_title">Safe Walk</string>
+    <string name="safe_walk_active">Safe Walk Active</string>
+    <string name="safe_walk_companion">Walking with %s</string>
+    <string name="safe_walk_check_in">Are you OK?</string>
+    <string name="safe_walk_arrived">I\'ve Arrived</string>
+    
+    <!-- Community Safety -->
+    <string name="community_title">Community Safety</string>
+    <string name="community_reports">Safety Reports</string>
+    <string name="area_safety_score">Area Safety Score</string>
+    <string name="submit_report">Submit Report</string>
+    
     <!-- Error Messages -->
     <string name="error_generic">Something went wrong. Please try again.</string>
     <string name="error_no_contacts">Please add at least one emergency contact first.</string>

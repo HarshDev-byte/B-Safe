@@ -36,6 +36,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!-- Bluetooth for Panic Button -->
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
     <!-- Contacts -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
@@ -149,6 +155,21 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/sos_widget_info" />
         </receiver>
+
+        <!-- Quick Settings Tile for Lock Screen SOS -->
+        <service
+            android:name=".services.SOSQuickSettingsTile"
+            android:exported="true"
+            android:icon="@drawable/ic_sos"
+            android:label="@string/sos_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.ACTIVE_TILE"
+                android:value="true" />
+        </service>
 
         <!-- WorkManager Initializer -->
         <provider

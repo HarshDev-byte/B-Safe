@@ -58,6 +58,10 @@ fun HomeScreen(
     onNavigateToSafeRoute: () -> Unit = {},
     onNavigateToSafetyScore: () -> Unit = {},
     onNavigateToJourney: () -> Unit = {},
+    onNavigateToAIInsights: () -> Unit = {},
+    onNavigateToSafeWalk: () -> Unit = {},
+    onNavigateToCommunity: () -> Unit = {},
+    onNavigateToWearables: () -> Unit = {},
     onSignIn: () -> Unit = {}
 ) {
     val sosState by viewModel.sosState.collectAsState()
@@ -172,7 +176,10 @@ fun HomeScreen(
                 onNavigateToLiveLocation = onNavigateToLiveLocation,
                 onNavigateToSafeRoute = onNavigateToSafeRoute,
                 onNavigateToSafetyScore = onNavigateToSafetyScore,
-                onNavigateToJourney = onNavigateToJourney
+                onNavigateToJourney = onNavigateToJourney,
+                onNavigateToAIInsights = onNavigateToAIInsights,
+                onNavigateToSafeWalk = onNavigateToSafeWalk,
+                onNavigateToCommunity = onNavigateToCommunity
             )
         }
     ) { padding ->
@@ -370,7 +377,10 @@ private fun BottomSheetContent(
     onNavigateToLiveLocation: () -> Unit,
     onNavigateToSafeRoute: () -> Unit,
     onNavigateToSafetyScore: () -> Unit,
-    onNavigateToJourney: () -> Unit
+    onNavigateToJourney: () -> Unit,
+    onNavigateToAIInsights: () -> Unit,
+    onNavigateToSafeWalk: () -> Unit,
+    onNavigateToCommunity: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -493,6 +503,30 @@ private fun BottomSheetContent(
                     label = "Score",
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
                     onClick = onNavigateToSafetyScore
+                )
+            }
+            item {
+                QuickActionChip(
+                    icon = Icons.Default.Psychology,
+                    label = "AI",
+                    containerColor = Color(0xFF9C27B0).copy(alpha = 0.2f),
+                    onClick = onNavigateToAIInsights
+                )
+            }
+            item {
+                QuickActionChip(
+                    icon = Icons.Default.Accessibility,
+                    label = "Safe Walk",
+                    containerColor = Color(0xFF00BCD4).copy(alpha = 0.2f),
+                    onClick = onNavigateToSafeWalk
+                )
+            }
+            item {
+                QuickActionChip(
+                    icon = Icons.Default.Groups,
+                    label = "Community",
+                    containerColor = Color(0xFF4CAF50).copy(alpha = 0.2f),
+                    onClick = onNavigateToCommunity
                 )
             }
             if (settings.enableFakeCall) {
